@@ -1,0 +1,181 @@
+---
+title: "Document title"
+subtitle: "Document subtitle"
+author: "Sabrina Boeing"
+date: 2024/11/28
+format:
+  html:
+    theme: default
+    css: styles.css
+    embed-resources: true # enabels embedding of resources like plots, tables etc.
+    toc: true # adds table of contents (= toc)
+    html-math-method: katex # mathematical formula are rendered with katex
+    #code-fold: code can be opened by click
+editor: visual # activates Visual for easier editing of the document 
+#execute: 
+  #echo: false #would hide all of the code if it was enabled, echo can also be specifically set to true for showing code again
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+library(palmerpenguins)
+```
+
+```{r}
+#| warning: false
+#| echo: false
+
+source("00_analyse.R")
+```
+
+# Heading 1
+
+## Heading 2
+
+### Heading 3
+
+# Text formatting
+
+## Text options
+
+Normal text.
+
+You can write text **bold**, *italics*, ~~strikeout~~, `code`.
+
+superscript^2^ subscript~2~
+
+[underline]{.underline} [small caps]{.smallcaps}
+
+This is how you insert code chunks in your text: `{r} nrow(penguins)` = number of penguins.
+
+This is how you add footnotes[^1].
+
+[^1]: Quelle
+
+------------------------------------------------------------------------
+
+## Lists
+
+How to make bullet lists or numbered lists:
+
+-   Bulleted list: item 1
+
+-   Item 2
+
+    -   Item 2a
+
+    -   Item 2b
+
+1.  Numbered list: item 1
+
+2.  Item 2. The numbers are incremented automatically in the output.
+
+------------------------------------------------------------------------
+
+## Links
+
+<http://example.com>
+
+[linked phrase](http://example.com)
+
+# Tables
+
+| First Header | Second Header |
+|--------------|---------------|
+| Content Cell | Content Cell  |
+| Content Cell | Content Cell  |
+
+# Figures
+
+## Local figures
+
+```{r}
+#| label: plot-penguins
+#| warning: false
+#| echo: false
+#| column: page
+
+ggplot(penguins, 
+       aes(x = flipper_length_mm, y = bill_length_mm)) +
+  geom_point(aes(color = species, shape = species)) +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(
+    title = "Flipper and bill length",
+    subtitle = "Dimensions for penguins at Palmer Station LTER",
+    x = "Flipper length (mm)", y = "Bill length (mm)",
+    color = "Penguin species", shape = "Penguin species"
+  ) +
+  theme_minimal()
+```
+
+## Sourced figures
+
+```{r}
+#| label: source
+#| warning: false
+#| echo: false
+
+test_plot
+```
+
+## Multiple figures
+
+```{r}
+#| label: fig-mpg
+#| warning: false
+#| echo: false
+#| fig-cap: "City and highway mileage for 38 popular models of cars."
+#| fig-subcap:
+#|   - "Color by number of cylinders"
+#|   - "Color by engine displacement, in liters"
+#| layout-ncol: 2
+#| fig.width: 4  # Adjust the width to half of the original size (previously 8)
+#| fig.height: 4  # Keep the height the same or adjust as needed
+
+ggplot(mpg, aes(x = hwy, y = cty, color = cyl)) +
+  geom_point(alpha = 0.5, size = 2) +
+  scale_color_viridis_c() +
+  theme_minimal()
+
+ggplot(mpg, aes(x = hwy, y = cty, color = displ)) +
+  geom_point(alpha = 0.5, size = 2) +
+  scale_color_viridis_c(option = "E") +
+  theme_minimal()
+```
+
+# Pictures
+
+![](https://raw.githubusercontent.com/quarto-dev/quarto-web/main/docs/get-started/hello/rstudio/lter_penguins.png){fig-alt="Illustration of three species of Palmer Archipelago penguins: Chinstrap, Gentoo, and Adelie. Artwork by @allison_horst." width="401"}
+
+![optional caption text](https://posit.co/wp-content/uploads/2022/10/thumbnail-2.jpg){fig-alt="Quarto logo and the word quarto spelled in small case letters"}
+
+## How to insert R code
+
+```{r}
+# Beispiel R-Code
+summary(cars)
+
+## Running Code
+
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+# Mathematical formulas
+
+Inline: $E = mc^2$
+
+Block: $$
+\int_a^b f(x) dx = F(b) - F(a)
+$$
